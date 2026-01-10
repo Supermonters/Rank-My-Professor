@@ -25,7 +25,7 @@ export default function App() {
   useEffect(() => {
     async function load() {
       try {
-        const res = await fetch(`${import.meta.env.BASE_URL}professors.json`);
+        const res = await fetch("/professors.json");
         const data = await res.json();
         
         const transformed = data.map((item) => ({
@@ -69,12 +69,14 @@ export default function App() {
   };
 
   const handleGuessRating = (guess) => {
-    const isCorrect = Math.abs(guess - leftProf.rating) <= 0.5;
-    if (isCorrect) {
-      setScore((s) => s + 1);
-      setLeftProf(randomProf());
-    } else {
+    const difference = Math.abs(guess - leftProf.rating);
+    
+    if (difference > 0.5) {
       setLost(true);
+    } else {
+      const pointsAwarded = Math.round((1 - difference) * 10);
+      setScore((s) => s + pointsAwarded);
+      setLeftProf(randomProf());
     }
   };
 
