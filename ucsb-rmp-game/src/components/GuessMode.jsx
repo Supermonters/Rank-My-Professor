@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function GuessMode({ prof, onGuess }) {
+export default function GuessMode({ prof, onGuess, onExit }) {
   if (!prof) return null;
 
   return (
@@ -23,10 +23,14 @@ export default function GuessMode({ prof, onGuess }) {
       <div style={{ width: "50%" }}>
         <h3>Guess the Rating</h3>
         {[1, 2, 3, 4, 5].map((r) => (
-          <button key={r} onClick={() => onGuess(r)}>
+          <button key={r} onClick={() => onGuess(r)} style={{ marginRight: 6 }}>
             {r}
           </button>
         ))}
+
+        <div style={{ marginTop: 16 }}>
+          <button onClick={onExit}>← Back to Modes</button>
+        </div>
       </div>
     </div>
   );

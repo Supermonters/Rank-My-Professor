@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function HigherLowerMode({ leftProf, rightProf, onChoose }) {
+export default function HigherLowerMode({ leftProf, rightProf, onChoose, onExit }) {
   if (!leftProf || !rightProf) return null;
 
   return (
@@ -16,6 +16,10 @@ export default function HigherLowerMode({ leftProf, rightProf, onChoose }) {
         <button onClick={() => onChoose("higher")}>⬆ Higher</button>
         <br /><br />
         <button onClick={() => onChoose("lower")}>⬇ Lower</button>
+
+        <div style={{ marginTop: 16 }}>
+          <button onClick={onExit}>← Back to Modes</button>
+        </div>
       </div>
 
       <div style={{ width: "40%" }}>

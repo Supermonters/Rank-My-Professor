@@ -4,6 +4,7 @@ import StartScreen from "./components/StartScreen";
 import ModeSelect from "./components/ModeSelect";
 import GuessMode from "./components/GuessMode";
 import HigherLowerMode from "./components/HigherLowerMode";
+import GameOverModal from "./components/GameOverModal";
 import professorsData from "./data/professors";
 
 export default function App() {
@@ -11,27 +12,41 @@ export default function App() {
   const [started, setStarted] = useState(false);
   const [mode, setMode] = useState(null);
   const [score, setScore] = useState(0);
+  const [lost, setLost] = useState(false);
 
   const [professors, setProfessors] = useState([]);
   const [leftProf, setLeftProf] = useState(null);
   const [rightProf, setRightProf] = useState(null);
 
-  // Initialize with local data
   useEffect(() => {
-    const data = professorsData;
-    setProfessors(data);
-    setLeftProf(data[Math.floor(Math.random() * data.length)]);
-    setRightProf(data[Math.floor(Math.random() * data.length)]);
+    async function load() {
+      try {
+        const res = await fetch("http://localhost:3004/professors");
+        const data = await res.json();
+        setProfessors(data);
+        setLeftProf(data[Math.floor(Math.random() * data.length)]);
+        setRightProf(data[Math.floor(Math.random() * data.length)]);
+      } catch (e) {
+        const data = professorsData; // fallback if db server not running
+        setProfessors(data);
+        setLeftProf(data[Math.floor(Math.random() * data.length)]);
+        setRightProf(data[Math.floor(Math.random() * data.length)]);
+      }
+    }
+    load();
   }, []);
 
   const randomProf = () =>
     professors[Math.floor(Math.random() * professors.length)];
 
   const handleGuessRating = (guess) => {
-    if (Math.abs(guess - leftProf.rating) <= 0.5) {
+    const isCorrect = Math.abs(guess - leftProf.rating) <= 0.5;
+    if (isCorrect) {
       setScore((s) => s + 1);
+      setLeftProf(randomProf());
+    } else {
+      setLost(true);
     }
-    setLeftProf(randomProf());
   };
 
   const handleHigherLower = (choice) => {
@@ -42,6 +57,21 @@ export default function App() {
 
     if (correct) setScore((s) => s + 1);
 
+    setLeftProf(randomProf());
+    setRightProf(randomProf());
+  };
+
+  const exitToModeSelect = () => {
+    const ok = window.confirm("Leave this game and go back to mode selection?");
+    if (ok) {
+      setLost(false);
+      setMode(null);
+    }
+  };
+
+  const restartGame = () => {
+    setScore(0);
+    setLost(false);
     setLeftProf(randomProf());
     setRightProf(randomProf());
   };
@@ -65,11 +95,11 @@ export default function App() {
   }
 
   return (
-    <div style={{ padding: 30 }}>
+    <div style={{ padding: 30, position: "relative" }}>
       <h2>Score: {score}</h2>
 
       {mode === "guess" && (
-        <GuessMode prof={leftProf} onGuess={handleGuessRating} />
+        <GuessMode prof={leftProf} onGuess={handleGuessRating} onExit={exitToModeSelect} />
       )}
 
       {mode === "higherlower" && (
@@ -77,8 +107,11 @@ export default function App() {
           leftProf={leftProf}
           rightProf={rightProf}
           onChoose={handleHigherLower}
+          onExit={exitToModeSelect}
         />
       )}
+
+      {lost && <GameOverModal score={score} onRestart={restartGame} />}
     </div>
   );
 }
