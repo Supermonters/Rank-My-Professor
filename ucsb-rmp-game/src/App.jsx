@@ -6,6 +6,7 @@ import GuessMode from "./components/GuessMode";
 import HigherLowerMode from "./components/HigherLowerMode";
 import GameOverModal from "./components/GameOverModal";
 import ConfirmationModal from "./components/ConfirmationModal";
+import Leaderboard from "./components/Leaderboard";
 
 export default function App() {
   const [playerName, setPlayerName] = useState("");
@@ -15,6 +16,7 @@ export default function App() {
   const [lost, setLost] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [confirmAction, setConfirmAction] = useState(null);
+  const [viewingLeaderboard, setViewingLeaderboard] = useState(false);
 
   const [professors, setProfessors] = useState([]);
   const [leftProf, setLeftProf] = useState(null);
@@ -47,6 +49,24 @@ export default function App() {
 
   const randomProf = () =>
     professors[Math.floor(Math.random() * professors.length)];
+
+  const saveScoreToLeaderboard = (finalScore) => {
+    try {
+      const leaderboards = JSON.parse(localStorage.getItem("rmp_leaderboards")) || { guess: [], higherlower: [] };
+      const modeKey = mode === "guess" ? "guess" : "higherlower";
+      const existingIndex = leaderboards[modeKey].findIndex(entry => entry.playerName === playerName);
+      if (existingIndex !== -1) {
+        if (finalScore > leaderboards[modeKey][existingIndex].score) {
+          leaderboards[modeKey][existingIndex].score = finalScore;
+        }
+      } else {
+        leaderboards[modeKey].push({ playerName, score: finalScore });
+      }
+      localStorage.setItem("rmp_leaderboards", JSON.stringify(leaderboards));
+    } catch (e) {
+      console.error("Failed to save leaderboard:", e);
+    }
+  };
 
   const handleGuessRating = (guess) => {
     const isCorrect = Math.abs(guess - leftProf.rating) <= 0.5;
@@ -93,6 +113,7 @@ export default function App() {
   };
 
   const restartGame = () => {
+    saveScoreToLeaderboard(score);
     setScore(0);
     setLost(false);
     setLeftProf(randomProf());
@@ -100,9 +121,11 @@ export default function App() {
   };
 
   const goBackToMenu = () => {
+    saveScoreToLeaderboard(score);
     setScore(0);
     setLost(false);
     setMode(null);
+    setViewingLeaderboard(false);
     setLeftProf(randomProf());
     setRightProf(randomProf());
   };
@@ -117,8 +140,20 @@ export default function App() {
     );
   }
 
+  if (viewingLeaderboard) {
+    return (
+      <Leaderboard playerName={playerName} onBack={() => setViewingLeaderboard(false)} />
+    );
+  }
+
   if (!mode) {
-    return <ModeSelect playerName={playerName} setMode={setMode} />;
+    return (
+      <ModeSelect 
+        playerName={playerName} 
+        setMode={setMode}
+        onViewLeaderboard={() => setViewingLeaderboard(true)}
+      />
+    );
   }
 
   if (!leftProf || !rightProf) {
