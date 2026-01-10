@@ -25,7 +25,7 @@ export default function App() {
   useEffect(() => {
     async function load() {
       try {
-        const res = await fetch("/professors.json");
+        const res = await fetch(`${import.meta.env.BASE_URL}professors.json`);
         const data = await res.json();
         
         const transformed = data.map((item) => ({
