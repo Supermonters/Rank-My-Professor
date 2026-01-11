@@ -1,4 +1,5 @@
-const VALID_MODES = new Set(["guess", "higherlower"]);
+const VALID_MODES = new Set(["guess", "guess10", "higherlower"]);
+const VALID_DIFFICULTIES = new Set(["easy", "normal", "hard"]);
 const MAX_NAME_LENGTH = 32;
 const MAX_SCORE = 100000;
 
@@ -35,6 +36,7 @@ export const onRequestPost = async ({ request, env }) => {
 
   const playerName = typeof payload.playerName === "string" ? payload.playerName.trim() : "";
   const mode = typeof payload.mode === "string" ? payload.mode : "";
+  const difficulty = typeof payload.difficulty === "string" ? payload.difficulty : "";
   const score = payload.score;
 
   if (!playerName || playerName.length > MAX_NAME_LENGTH) {
@@ -45,14 +47,18 @@ export const onRequestPost = async ({ request, env }) => {
     return jsonResponse({ ok: false, error: "Invalid game mode" }, 400);
   }
 
+  if (!VALID_DIFFICULTIES.has(difficulty)) {
+    return jsonResponse({ ok: false, error: "Invalid difficulty" }, 400);
+  }
+
   if (!Number.isInteger(score) || score < 0 || score > MAX_SCORE) {
     return jsonResponse({ ok: false, error: "Invalid score" }, 400);
   }
 
   const existing = await env.DB.prepare(
-    "SELECT score FROM leaderboard_entries WHERE player_name = ? AND mode = ?"
+    "SELECT score FROM leaderboard_entries WHERE player_name = ? AND mode = ? AND difficulty = ?"
   )
-    .bind(playerName, mode)
+    .bind(playerName, mode, difficulty)
     .first();
 
   if (existing && existing.score >= score) {
@@ -61,15 +67,15 @@ export const onRequestPost = async ({ request, env }) => {
 
   if (existing) {
     await env.DB.prepare(
-      "UPDATE leaderboard_entries SET score = ?, updated_at = datetime('now') WHERE player_name = ? AND mode = ?"
+      "UPDATE leaderboard_entries SET score = ?, updated_at = datetime('now') WHERE player_name = ? AND mode = ? AND difficulty = ?"
     )
-      .bind(score, playerName, mode)
+      .bind(score, playerName, mode, difficulty)
       .run();
   } else {
     await env.DB.prepare(
-      "INSERT INTO leaderboard_entries (player_name, mode, score) VALUES (?, ?, ?)"
+      "INSERT INTO leaderboard_entries (player_name, mode, difficulty, score) VALUES (?, ?, ?, ?)"
     )
-      .bind(playerName, mode, score)
+      .bind(playerName, mode, difficulty, score)
       .run();
   }
 

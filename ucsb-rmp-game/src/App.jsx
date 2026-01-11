@@ -65,12 +65,13 @@ export default function App() {
   const submitScoreToLeaderboard = async (finalScore) => {
     const trimmedName = playerName.trim();
     const modeKey = mode === "guess" ? "guess" : mode === "guess10" ? "guess10" : mode === "higherlower" ? "higherlower" : null;
+    const difficultyKey = ["easy", "normal", "hard"].includes(difficulty) ? difficulty : null;
 
-    if (!trimmedName || !modeKey || !Number.isInteger(finalScore)) {
+    if (!trimmedName || !modeKey || !difficultyKey || !Number.isInteger(finalScore)) {
       return;
     }
 
-    const submissionKey = `${trimmedName}|${modeKey}|${finalScore}`;
+    const submissionKey = `${trimmedName}|${modeKey}|${difficultyKey}|${finalScore}`;
     if (lastSubmissionRef.current === submissionKey) {
       return;
     }
@@ -83,7 +84,8 @@ export default function App() {
         body: JSON.stringify({
           playerName: trimmedName,
           score: finalScore,
-          mode: modeKey
+          mode: modeKey,
+          difficulty: difficultyKey
         })
       });
 
@@ -227,6 +229,7 @@ export default function App() {
             onChoose={handleHigherLower}
             onExit={exitToModeSelect}
             score={score}
+            difficulty={difficulty}
           />
         )}
       </div>

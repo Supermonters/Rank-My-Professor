@@ -1,4 +1,5 @@
-const VALID_MODES = new Set(["guess", "higherlower"]);
+const VALID_MODES = new Set(["guess", "guess10", "higherlower"]);
+const VALID_DIFFICULTIES = new Set(["easy", "normal", "hard"]);
 const MAX_NAME_LENGTH = 32;
 const DEFAULT_LIMIT = 10;
 const MAX_LIMIT = 50;
@@ -31,9 +32,15 @@ export const onRequestGet = async ({ request, env }) => {
 
   const url = new URL(request.url);
   const mode = url.searchParams.get("mode") || "";
+  const difficultyParam = url.searchParams.get("difficulty");
+  const difficulty = difficultyParam ? difficultyParam : "normal";
 
   if (!VALID_MODES.has(mode)) {
     return jsonResponse({ ok: false, error: "Invalid game mode" }, 400);
+  }
+
+  if (!VALID_DIFFICULTIES.has(difficulty)) {
+    return jsonResponse({ ok: false, error: "Invalid difficulty" }, 400);
   }
 
   const limitParam = Number.parseInt(url.searchParams.get("limit") || "", 10);
@@ -42,15 +49,15 @@ export const onRequestGet = async ({ request, env }) => {
   const offset = clamp(Number.isFinite(offsetParam) ? offsetParam : 0, 0, Number.MAX_SAFE_INTEGER);
 
   const rows = await env.DB.prepare(
-    "SELECT player_name as playerName, score FROM leaderboard_entries WHERE mode = ? ORDER BY score DESC, updated_at ASC LIMIT ? OFFSET ?"
+    "SELECT player_name as playerName, score FROM leaderboard_entries WHERE mode = ? AND difficulty = ? ORDER BY score DESC, updated_at ASC LIMIT ? OFFSET ?"
   )
-    .bind(mode, limit, offset)
+    .bind(mode, difficulty, limit, offset)
     .all();
 
   const totalRow = await env.DB.prepare(
-    "SELECT COUNT(*) as count FROM leaderboard_entries WHERE mode = ?"
+    "SELECT COUNT(*) as count FROM leaderboard_entries WHERE mode = ? AND difficulty = ?"
   )
-    .bind(mode)
+    .bind(mode, difficulty)
     .first();
 
   const total = totalRow?.count ?? 0;
@@ -61,16 +68,16 @@ export const onRequestGet = async ({ request, env }) => {
   let playerRank = null;
   if (playerName && playerName.length <= MAX_NAME_LENGTH) {
     const playerRow = await env.DB.prepare(
-      "SELECT score, updated_at FROM leaderboard_entries WHERE player_name = ? AND mode = ?"
+      "SELECT score, updated_at FROM leaderboard_entries WHERE player_name = ? AND mode = ? AND difficulty = ?"
     )
-      .bind(playerName, mode)
+      .bind(playerName, mode, difficulty)
       .first();
 
     if (playerRow) {
       const aheadRow = await env.DB.prepare(
-        "SELECT COUNT(*) as count FROM leaderboard_entries WHERE mode = ? AND (score > ? OR (score = ? AND updated_at < ?))"
+        "SELECT COUNT(*) as count FROM leaderboard_entries WHERE mode = ? AND difficulty = ? AND (score > ? OR (score = ? AND updated_at < ?))"
       )
-        .bind(mode, playerRow.score, playerRow.score, playerRow.updated_at)
+        .bind(mode, difficulty, playerRow.score, playerRow.score, playerRow.updated_at)
         .first();
       playerRank = (aheadRow?.count ?? 0) + 1;
     }
@@ -79,6 +86,7 @@ export const onRequestGet = async ({ request, env }) => {
   return jsonResponse({
     ok: true,
     mode,
+    difficulty,
     limit,
     offset,
     total,

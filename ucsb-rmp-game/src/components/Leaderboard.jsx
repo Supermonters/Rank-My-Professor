@@ -9,13 +9,31 @@
 
 import React from "react";
 
+const MODE_OPTIONS = [
+  { value: "guess", label: "Arcade: Guess the Rating", emoji: "🎮" },
+  { value: "guess10", label: "Best Out of 10", emoji: "🏆" },
+  { value: "higherlower", label: "Higher or Lower", emoji: "⬆️" }
+];
+
+const DIFFICULTY_OPTIONS = [
+  { value: "easy", label: "Easy", emoji: "🌿" },
+  { value: "normal", label: "Normal", emoji: "⚖️" },
+  { value: "hard", label: "Hard", emoji: "🔥" }
+];
+
+const buildLeaderboardState = () =>
+  Object.fromEntries(DIFFICULTY_OPTIONS.map(({ value }) => [value, []]));
+
+const buildMetaState = () =>
+  Object.fromEntries(
+    DIFFICULTY_OPTIONS.map(({ value }) => [value, { total: 0, playerRank: null }])
+  );
+
 export default function Leaderboard({ playerName, onBack }) {
   const normalizedName = playerName.trim();
-  const [leaderboards, setLeaderboards] = React.useState({ guess: [], higherlower: [] });
-  const [meta, setMeta] = React.useState({
-    guess: { total: 0, playerRank: null },
-    higherlower: { total: 0, playerRank: null }
-  });
+  const [selectedMode, setSelectedMode] = React.useState(MODE_OPTIONS[0].value);
+  const [leaderboards, setLeaderboards] = React.useState(() => buildLeaderboardState());
+  const [meta, setMeta] = React.useState(() => buildMetaState());
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState("");
 
@@ -25,45 +43,46 @@ export default function Leaderboard({ playerName, onBack }) {
     const loadLeaderboards = async () => {
       setLoading(true);
       setError("");
+      setLeaderboards(buildLeaderboardState());
+      setMeta(buildMetaState());
 
       try {
-        const params = new URLSearchParams({ limit: "10" });
+        const baseParams = new URLSearchParams({ limit: "10" });
         if (normalizedName) {
-          params.set("playerName", normalizedName);
+          baseParams.set("playerName", normalizedName);
         }
 
-        const [guessRes, higherRes] = await Promise.all([
-          fetch(`/api/leaderboard?mode=guess&${params.toString()}`),
-          fetch(`/api/leaderboard?mode=higherlower&${params.toString()}`)
-        ]);
-
-        if (!guessRes.ok || !higherRes.ok) {
-          throw new Error("Failed to load leaderboards");
-        }
-
-        const [guessData, higherData] = await Promise.all([
-          guessRes.json(),
-          higherRes.json()
-        ]);
+        const results = await Promise.all(
+          DIFFICULTY_OPTIONS.map(async ({ value }) => {
+            const params = new URLSearchParams(baseParams);
+            params.set("mode", selectedMode);
+            params.set("difficulty", value);
+            const res = await fetch(`/api/leaderboard?${params.toString()}`);
+            if (!res.ok) {
+              throw new Error("Failed to load leaderboards");
+            }
+            const data = await res.json();
+            return { difficulty: value, data };
+          })
+        );
 
         if (cancelled) {
           return;
         }
 
-        setLeaderboards({
-          guess: guessData.entries || [],
-          higherlower: higherData.entries || []
+        const nextLeaderboards = buildLeaderboardState();
+        const nextMeta = buildMetaState();
+
+        results.forEach(({ difficulty, data }) => {
+          nextLeaderboards[difficulty] = data.entries || [];
+          nextMeta[difficulty] = {
+            total: data.total ?? 0,
+            playerRank: data.playerRank ?? null
+          };
         });
-        setMeta({
-          guess: {
-            total: guessData.total ?? 0,
-            playerRank: guessData.playerRank ?? null
-          },
-          higherlower: {
-            total: higherData.total ?? 0,
-            playerRank: higherData.playerRank ?? null
-          }
-        });
+
+        setLeaderboards(nextLeaderboards);
+        setMeta(nextMeta);
       } catch (e) {
         if (!cancelled) {
           setError("Unable to load the online leaderboard right now.");
@@ -80,14 +99,14 @@ export default function Leaderboard({ playerName, onBack }) {
     return () => {
       cancelled = true;
     };
-  }, [normalizedName]);
+  }, [normalizedName, selectedMode]);
 
-  const LeaderboardTable = ({ mode, title, emoji }) => {
-    const sorted = [...leaderboards[mode]].sort((a, b) => b.score - a.score).slice(0, 10);
-    const playerRank = meta[mode]?.playerRank;
+  const LeaderboardTable = ({ difficulty, title, emoji }) => {
+    const sorted = [...(leaderboards[difficulty] || [])].sort((a, b) => b.score - a.score).slice(0, 10);
+    const playerRank = meta[difficulty]?.playerRank;
 
     return (
-      <div style={{ flex: 1, minWidth: 400 }}>
+      <div style={{ flex: 1, minWidth: 280 }}>
         <h3 style={{ marginBottom: 20, color: "var(--primary-blue)", fontSize: "18px", fontWeight: 700 }}>
           {emoji} {title}
         </h3>
@@ -162,6 +181,9 @@ export default function Leaderboard({ playerName, onBack }) {
     );
   };
 
+  const selectedModeMeta =
+    MODE_OPTIONS.find((option) => option.value === selectedMode) || MODE_OPTIONS[0];
+
   return (
     <div style={{ background: "var(--light-gray)", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
       {/* Header */}
@@ -203,22 +225,58 @@ export default function Leaderboard({ playerName, onBack }) {
 
       {/* Content */}
       <div style={{ flex: 1, maxWidth: 1200, margin: "0 auto", padding: "40px 30px", paddingTop: 80, width: "100%", boxSizing: "border-box" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 30, marginBottom: 40 }}>
-          <div style={{
-            background: "var(--white)",
-            borderRadius: 0,
-            padding: 24
-          }}>
-            <LeaderboardTable mode="guess" title="Guess the Rating" emoji="📊" />
+        <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 16, marginBottom: 30 }}>
+          <div>
+            <p style={{ margin: "0 0 6px 0", fontSize: "12px", color: "var(--muted-2)" }}>Showing leaderboards for</p>
+            <h2 style={{ margin: 0, fontSize: "22px", fontWeight: 700, color: "var(--black)" }}>
+              {selectedModeMeta.emoji} {selectedModeMeta.label}
+            </h2>
           </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <label htmlFor="leaderboard-mode" style={{ fontSize: "14px", fontWeight: 600, color: "var(--black)" }}>
+              Gamemode
+            </label>
+            <select
+              id="leaderboard-mode"
+              value={selectedMode}
+              onChange={(e) => setSelectedMode(e.target.value)}
+              style={{
+                background: "var(--white)",
+                color: "var(--black)",
+                border: "1px solid var(--primary-blue)",
+                borderRadius: 20,
+                padding: "8px 14px",
+                fontSize: "14px",
+                fontWeight: 600,
+                cursor: "pointer"
+              }}
+            >
+              {MODE_OPTIONS.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.emoji} {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
 
-          <div style={{
-            background: "var(--white)",
-            borderRadius: 0,
-            padding: 24
-          }}>
-            <LeaderboardTable mode="higherlower" title="Higher or Lower" emoji="⬆️" />
-          </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 24, marginBottom: 40 }}>
+          {DIFFICULTY_OPTIONS.map((difficulty) => (
+            <div
+              key={difficulty.value}
+              style={{
+                background: "var(--white)",
+                borderRadius: 0,
+                padding: 24
+              }}
+            >
+              <LeaderboardTable
+                difficulty={difficulty.value}
+                title={difficulty.label}
+                emoji={difficulty.emoji}
+              />
+            </div>
+          ))}
         </div>
       </div>
     </div>
