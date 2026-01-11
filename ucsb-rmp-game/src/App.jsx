@@ -140,8 +140,8 @@ export default function App() {
     setRightProf(randomProf());
   };
 
-  const goBackToMenu = () => {
-    void submitScoreToLeaderboard(score);
+  const goBackToMenu = async () => {
+    await submitScoreToLeaderboard(score);
     setScore(0);
     setLost(false);
     setDifficulty(null);
