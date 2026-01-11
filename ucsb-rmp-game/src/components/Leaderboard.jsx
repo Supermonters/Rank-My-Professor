@@ -245,10 +245,17 @@ export default function Leaderboard({ playerName, onBack }) {
                 color: "var(--black)",
                 border: "1px solid var(--primary-blue)",
                 borderRadius: 20,
-                padding: "8px 14px",
+                padding: "8px 32px 8px 14px",
                 fontSize: "14px",
                 fontWeight: 600,
-                cursor: "pointer"
+                cursor: "pointer",
+                appearance: "none",
+                WebkitAppearance: "none",
+                MozAppearance: "none",
+                backgroundImage: "linear-gradient(45deg, transparent 50%, var(--black) 50%), linear-gradient(135deg, var(--black) 50%, transparent 50%)",
+                backgroundPosition: "calc(100% - 18px) 55%, calc(100% - 12px) 55%",
+                backgroundSize: "6px 6px, 6px 6px",
+                backgroundRepeat: "no-repeat"
               }}
             >
               {MODE_OPTIONS.map((option) => (
