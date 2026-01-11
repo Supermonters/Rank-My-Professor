@@ -469,39 +469,42 @@ export default function HigherLowerMode({
                         lineHeight: "1.4",
                       }}
                     >
-                      {difficulty !== "hard" && (
-                        <span>
-                          Grade:{" "}
-                          <span
-                            style={{
-                              fontWeight: 600,
-                              color: "var(--black)",
-                              fontFamily:
-                                '"Helvetica Neue", Helvetica, Arial, sans-serif',
-                            }}
-                          >
-                            {comment.grade || "N/A"}
-                          </span>{" "}
-                          &nbsp;&nbsp;
-                        </span>
-                      )}
-                      {difficulty === "hard" && (
-                        <span>
-                          Grade:{" "}
-                          <span
-                            style={{
-                              fontWeight: 600,
-                              color: "var(--black)",
-                              fontFamily:
-                                '"Helvetica Neue", Helvetica, Arial, sans-serif',
-                            }}
-                          >
-                            ??
-                          </span>{" "}
-                          &nbsp;&nbsp;
-                        </span>
-                      )}
-                      Textbook:{" "}
+                      For Credit:{" "}
+                      <span
+                        style={{
+                          fontWeight: 600,
+                          color: "var(--black)",
+                          fontFamily:
+                            '"Helvetica Neue", Helvetica, Arial, sans-serif',
+                        }}
+                      >
+                        {difficulty === "hard" ? "??" : "Yes"}
+                      </span>{" "}
+                      &nbsp; Attendance:{" "}
+                      <span
+                        style={{
+                          fontWeight: 600,
+                          color: "var(--black)",
+                          fontFamily:
+                            '"Helvetica Neue", Helvetica, Arial, sans-serif',
+                        }}
+                      >
+                        {difficulty === "hard" ? "??" : "Not Mandatory"}
+                      </span>{" "}
+                      &nbsp; Grade:{" "}
+                      <span
+                        style={{
+                          fontWeight: 600,
+                          color: "var(--black)",
+                          fontFamily:
+                            '"Helvetica Neue", Helvetica, Arial, sans-serif',
+                        }}
+                      >
+                        {difficulty === "hard"
+                          ? "??"
+                          : comment.grade || "N/A"}
+                      </span>{" "}
+                      &nbsp; Textbook:{" "}
                       <span
                         style={{
                           fontWeight: 600,
@@ -816,39 +819,42 @@ export default function HigherLowerMode({
                         lineHeight: "1.4",
                       }}
                     >
-                      {difficulty !== "hard" && (
-                        <span>
-                          Grade:{" "}
-                          <span
-                            style={{
-                              fontWeight: 600,
-                              color: "var(--black)",
-                              fontFamily:
-                                '"Helvetica Neue", Helvetica, Arial, sans-serif',
-                            }}
-                          >
-                            {comment.grade || "N/A"}
-                          </span>{" "}
-                          &nbsp;&nbsp;
-                        </span>
-                      )}
-                      {difficulty === "hard" && (
-                        <span>
-                          Grade:{" "}
-                          <span
-                            style={{
-                              fontWeight: 600,
-                              color: "var(--black)",
-                              fontFamily:
-                                '"Helvetica Neue", Helvetica, Arial, sans-serif',
-                            }}
-                          >
-                            ??
-                          </span>{" "}
-                          &nbsp;&nbsp;
-                        </span>
-                      )}
-                      Textbook:{" "}
+                      For Credit:{" "}
+                      <span
+                        style={{
+                          fontWeight: 600,
+                          color: "var(--black)",
+                          fontFamily:
+                            '"Helvetica Neue", Helvetica, Arial, sans-serif',
+                        }}
+                      >
+                        {difficulty === "hard" ? "??" : "Yes"}
+                      </span>{" "}
+                      &nbsp; Attendance:{" "}
+                      <span
+                        style={{
+                          fontWeight: 600,
+                          color: "var(--black)",
+                          fontFamily:
+                            '"Helvetica Neue", Helvetica, Arial, sans-serif',
+                        }}
+                      >
+                        {difficulty === "hard" ? "??" : "Not Mandatory"}
+                      </span>{" "}
+                      &nbsp; Grade:{" "}
+                      <span
+                        style={{
+                          fontWeight: 600,
+                          color: "var(--black)",
+                          fontFamily:
+                            '"Helvetica Neue", Helvetica, Arial, sans-serif',
+                        }}
+                      >
+                        {difficulty === "hard"
+                          ? "??"
+                          : comment.grade || "N/A"}
+                      </span>{" "}
+                      &nbsp; Textbook:{" "}
                       <span
                         style={{
                           fontWeight: 600,
