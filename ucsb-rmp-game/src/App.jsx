@@ -22,6 +22,7 @@ export default function App() {
   const [professors, setProfessors] = useState([]);
   const [leftProf, setLeftProf] = useState(null);
   const [rightProf, setRightProf] = useState(null);
+  const [questionCount, setQuestionCount] = useState(0);
   const lastSubmissionRef = useRef(null);
 
   useEffect(() => {
@@ -49,12 +50,21 @@ export default function App() {
     load();
   }, []);
 
+  // Reset question counter when entering Best of 10 mode
+  useEffect(() => {
+    if (mode === "guess10") {
+      setQuestionCount(0);
+      setScore(0);
+      setLost(false);
+    }
+  }, [mode]);
+
   const randomProf = () =>
     professors[Math.floor(Math.random() * professors.length)];
 
   const submitScoreToLeaderboard = async (finalScore) => {
     const trimmedName = playerName.trim();
-    const modeKey = mode === "guess" ? "guess" : mode === "higherlower" ? "higherlower" : null;
+    const modeKey = mode === "guess" ? "guess" : mode === "guess10" ? "guess10" : mode === "higherlower" ? "higherlower" : null;
 
     if (!trimmedName || !modeKey || !Number.isInteger(finalScore)) {
       return;
@@ -87,13 +97,25 @@ export default function App() {
 
   const handleGuessRating = (guess) => {
     const difference = Math.abs(guess - leftProf.rating);
-    
-    if (difference > 0.5) {
-      setLost(true);
-    } else {
-      const pointsAwarded = Math.round((1 - difference) * 10);
+
+    if (mode === "guess") {
+      if (difference > 0.5) {
+        setLost(true);
+      } else {
+        const pointsAwarded = Math.round((1 - difference) * 10);
+        setScore((s) => s + pointsAwarded);
+        setLeftProf(randomProf());
+      }
+    } else if (mode === "guess10") {
+      const pointsAwarded = Math.max(0, Math.round((1 - difference) * 10));
       setScore((s) => s + pointsAwarded);
-      setLeftProf(randomProf());
+      const nextCount = questionCount + 1;
+      if (nextCount >= 10) {
+        setLost(true);
+      } else {
+        setLeftProf(randomProf());
+      }
+      setQuestionCount(nextCount);
     }
   };
 
@@ -122,6 +144,8 @@ export default function App() {
       setLost(false);
       setMode(null);
       setDifficulty(null);
+      setQuestionCount(0);
+      setScore(0);
     }
     setShowConfirm(false);
     setConfirmAction(null);
@@ -138,6 +162,7 @@ export default function App() {
     setLost(false);
     setLeftProf(randomProf());
     setRightProf(randomProf());
+    setQuestionCount(0);
   };
 
   const goBackToMenu = async () => {
@@ -149,6 +174,7 @@ export default function App() {
     setViewingLeaderboard(false);
     setLeftProf(randomProf());
     setRightProf(randomProf());
+    setQuestionCount(0);
   };
 
   if (!started) {
@@ -190,6 +216,10 @@ export default function App() {
           <GuessMode prof={leftProf} onGuess={handleGuessRating} onExit={exitToModeSelect} score={score} difficulty={difficulty} />
         )}
 
+        {mode === "guess10" && (
+          <GuessMode prof={leftProf} onGuess={handleGuessRating} onExit={exitToModeSelect} score={score} difficulty={difficulty} />
+        )}
+
         {mode === "higherlower" && (
           <HigherLowerMode
             leftProf={leftProf}
@@ -212,4 +242,3 @@ export default function App() {
     </div>
   );
 }
-
