@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from "react";
 
-export default function GuessMode({ prof, onGuess, onExit, score }) {
+export default function GuessMode({ prof, onGuess, onExit, score, difficulty }) {
   const [guess, setGuess] = useState(2.5);
   const [submitted, setSubmitted] = useState(false);
   const [fillPercentage, setFillPercentage] = useState(0);
@@ -138,16 +138,20 @@ export default function GuessMode({ prof, onGuess, onExit, score }) {
                     margin: "8px 0 0 0"
                   }}>
                     <span style={{ marginRight: 12 }}>📚 {comment.class}</span>
-                    <span>Grade: {comment.grade}</span>
+                    {difficulty !== "hard" && <span>Grade: {comment.grade}</span>}
                   </div>
                   <div style={{ fontSize: "12px", color: "var(--black)", marginTop: 4 }}>
-                    <span style={{ marginRight: 12 }}>
-                      💡 Clarity: {comment.clarityRating}/5
-                    </span>
-                    <span style={{ marginRight: 12 }}>
-                      📊 Difficulty: {comment.difficultyRating}/5
-                    </span>
-                    <span>👍 Helpful: {comment.helpfulRating}/5</span>
+                    {difficulty === "easy" && (
+                      <>
+                        <span style={{ marginRight: 12 }}>
+                          💡 Clarity: {comment.clarityRating}/5
+                        </span>
+                        <span style={{ marginRight: 12 }}>
+                          📊 Difficulty: {comment.difficultyRating}/5
+                        </span>
+                        <span>👍 Helpful: {comment.helpfulRating}/5</span>
+                      </>
+                    )}
                   </div>
                 </div>
               ))}
@@ -323,4 +327,10 @@ export default function GuessMode({ prof, onGuess, onExit, score }) {
     </div>
   );
 }
+
+
+
+
+
+
 

@@ -187,7 +187,7 @@ export default function App() {
     <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
       <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
         {mode === "guess" && (
-          <GuessMode prof={leftProf} onGuess={handleGuessRating} onExit={exitToModeSelect} score={score} />
+          <GuessMode prof={leftProf} onGuess={handleGuessRating} onExit={exitToModeSelect} score={score} difficulty={difficulty} />
         )}
 
         {mode === "higherlower" && (
@@ -212,3 +212,4 @@ export default function App() {
     </div>
   );
 }
+

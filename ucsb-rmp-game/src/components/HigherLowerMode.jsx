@@ -204,3 +204,5 @@ export default function HigherLowerMode({ leftProf, rightProf, onChoose, onExit,
     </div>
   );
 }
+
+
