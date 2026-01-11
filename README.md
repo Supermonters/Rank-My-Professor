@@ -1,8 +1,8 @@
 # Rank My Professor Game
 
-A fun and interactive web game that tests your knowledge of UC Santa Barbara (UCSB) professors and their ratings. Guess professor ratings, compare them, and compete on the leaderboard!
+Parody game of Rate My Professor. Made for SB Hacks XII.
 
-## 🎮 Features
+## Features
 
 - **Three Game Modes:**
   - **Guess the Rating - Arcade**: Guess a professor's rating within 0.5 points. Game ends if you're wrong!
@@ -19,7 +19,7 @@ A fun and interactive web game that tests your knowledge of UC Santa Barbara (UC
 
 - **Modern UI**: Clean, responsive interface with smooth animations and sound effects
 
-## 🛠️ Technologies Used
+## Technologies Used
 
 - **Frontend:**
   - React 19
@@ -34,12 +34,12 @@ A fun and interactive web game that tests your knowledge of UC Santa Barbara (UC
   - ESLint for code quality
   - JSON Server for local development
 
-## 📋 Prerequisites
+## Prerequisites
 
 - Node.js 18+ and npm
 - For production deployment: Cloudflare account with D1 database
 
-## 🚀 Installation
+## Installation
 
 1. **Clone the repository:**
    ```bash
@@ -62,7 +62,7 @@ A fun and interactive web game that tests your knowledge of UC Santa Barbara (UC
      npm run db
      ```
 
-## 🎯 Running the Application
+## Running the Application
 
 ### Development Mode
 
@@ -125,7 +125,7 @@ ucsb-rmp-game/
 └── package.json
 ```
 
-## 🎲 How to Play
+## How to Play
 
 1. **Start the Game:**
    - Enter your name on the start screen
@@ -147,7 +147,7 @@ ucsb-rmp-game/
    - Check your ranking on the leaderboard page
    - Filter by game mode and difficulty
 
-## 🚢 Deployment
+## Deployment
 
 The project is configured for deployment on:
 
@@ -167,13 +167,9 @@ The project is configured for deployment on:
      npx wrangler deploy
      ```
 
-## 📝 License
+## License
 
 This project is private and for educational/personal use.
-
-## 🤝 Contributing
-
-This is a personal project. Contributions are welcome but please open an issue first to discuss any changes.
 
 ---
 
