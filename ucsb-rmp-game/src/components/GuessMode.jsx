@@ -1,7 +1,9 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 
 export default function GuessMode({ prof, onGuess, onExit, score }) {
   const [guess, setGuess] = useState(2.5);
+  const [submitted, setSubmitted] = useState(false);
+  const [fillPercentage, setFillPercentage] = useState(0);
 
   if (!prof) return null;
 
@@ -11,8 +13,36 @@ export default function GuessMode({ prof, onGuess, onExit, score }) {
     return shuffled.slice(0, 6);
   }, [prof]);
 
+  // Animate the green bar fill on submit
+  useEffect(() => {
+    if (submitted) {
+      let currentFill = 0;
+      const targetFill = (prof.rating / 5) * 100;
+      const interval = setInterval(() => {
+        currentFill += (targetFill / 50); // 50 steps for smooth animation
+        if (currentFill >= targetFill) {
+          currentFill = targetFill;
+          clearInterval(interval);
+        }
+        setFillPercentage(currentFill);
+      }, 30);
+      return () => clearInterval(interval);
+    }
+  }, [submitted, prof.rating]);
+
+  // Reset form when new professor is loaded
+  useEffect(() => {
+    setSubmitted(false);
+    setGuess(2.5);
+    setFillPercentage(0);
+  }, [prof.id]);
+
   const handleSubmit = () => {
-    onGuess(parseFloat(guess));
+    setSubmitted(true);
+    // Wait for animation (1.5s) + 2 seconds before moving to next question
+    setTimeout(() => {
+      onGuess(parseFloat(guess));
+    }, 3500);
   };
 
   return (
@@ -159,6 +189,49 @@ export default function GuessMode({ prof, onGuess, onExit, score }) {
                 </p>
               </div>
 
+              {/* Animated green bar showing correct rating */}
+              {submitted && (
+                <div style={{ marginBottom: 24 }}>
+                  <div style={{
+                    background: "#f5f5f5",
+                    padding: 24,
+                    borderRadius: 0,
+                    marginBottom: 24
+                  }}>
+                    <p style={{ margin: "0 0 12px 0", fontSize: "12px", color: "#666666" }}>Correct Rating</p>
+                    <div style={{
+                      position: "relative",
+                      width: "100%",
+                      height: 40,
+                      background: "#e0e0e0",
+                      borderRadius: 4,
+                      overflow: "hidden"
+                    }}>
+                      <div
+                        style={{
+                          position: "absolute",
+                          left: 0,
+                          top: 0,
+                          height: "100%",
+                          background: "#4caf50",
+                          width: `${fillPercentage}%`,
+                          transition: "width 0.03s linear",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "flex-end",
+                          paddingRight: 12,
+                          fontSize: "18px",
+                          fontWeight: 700,
+                          color: "#ffffff"
+                        }}
+                      >
+                        {fillPercentage > 10 && `${prof.rating.toFixed(1)}`}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               <label style={{
                 display: "block",
                 marginBottom: 16,
@@ -176,14 +249,16 @@ export default function GuessMode({ prof, onGuess, onExit, score }) {
                 step="0.1"
                 value={guess}
                 onChange={(e) => setGuess(e.target.value)}
+                disabled={submitted}
                 style={{
                   width: "100%",
                   height: 6,
-                  cursor: "pointer",
+                  cursor: submitted ? "not-allowed" : "pointer",
                   background: "#e0e0e0",
                   borderRadius: 3,
                   WebkitAppearance: "none",
-                  appearance: "none"
+                  appearance: "none",
+                  opacity: submitted ? 0.5 : 1
                 }}
               />
               <style>{`
@@ -223,22 +298,23 @@ export default function GuessMode({ prof, onGuess, onExit, score }) {
             <div style={{ display: "flex", gap: 12 }}>
               <button
                 onClick={handleSubmit}
+                disabled={submitted}
                 style={{
                   flex: 1,
                   padding: "14px 20px",
-                  background: "#0066cc",
+                  background: submitted ? "#cccccc" : "#0066cc",
                   color: "#ffffff",
                   border: "none",
                   borderRadius: 30,
-                  cursor: "pointer",
+                  cursor: submitted ? "not-allowed" : "pointer",
                   fontSize: "16px",
                   fontWeight: 600,
                   transition: "background-color 0.2s"
                 }}
-                onMouseEnter={(e) => e.target.style.backgroundColor = "#003399"}
-                onMouseLeave={(e) => e.target.style.backgroundColor = "#0066cc"}
+                onMouseEnter={(e) => !submitted && (e.target.style.backgroundColor = "#003399")}
+                onMouseLeave={(e) => !submitted && (e.target.style.backgroundColor = "#0066cc")}
               >
-                Submit Answer
+                {submitted ? "Submitted" : "Submit Answer"}
               </button>
             </div>
           </div>
@@ -247,3 +323,4 @@ export default function GuessMode({ prof, onGuess, onExit, score }) {
     </div>
   );
 }
+
