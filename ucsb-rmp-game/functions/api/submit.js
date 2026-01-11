@@ -22,7 +22,7 @@ export const onRequestOptions = () =>
   });
 
 export const onRequestPost = async ({ request, env }) => {
-  if (!env.rmp_leaderboard) {
+  if (!env.DB) {
     return jsonResponse({ ok: false, error: "Database not configured" }, 500);
   }
 
@@ -49,7 +49,7 @@ export const onRequestPost = async ({ request, env }) => {
     return jsonResponse({ ok: false, error: "Invalid score" }, 400);
   }
 
-  const existing = await env.rmp_leaderboard.prepare(
+  const existing = await env.DB.prepare(
     "SELECT score FROM leaderboard_entries WHERE player_name = ? AND mode = ?"
   )
     .bind(playerName, mode)
@@ -60,13 +60,13 @@ export const onRequestPost = async ({ request, env }) => {
   }
 
   if (existing) {
-    await env.rmp_leaderboard.prepare(
+    await env.DB.prepare(
       "UPDATE leaderboard_entries SET score = ?, updated_at = datetime('now') WHERE player_name = ? AND mode = ?"
     )
       .bind(score, playerName, mode)
       .run();
   } else {
-    await env.rmp_leaderboard.prepare(
+    await env.DB.prepare(
       "INSERT INTO leaderboard_entries (player_name, mode, score) VALUES (?, ?, ?)"
     )
       .bind(playerName, mode, score)

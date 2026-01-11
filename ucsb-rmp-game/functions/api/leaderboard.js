@@ -25,7 +25,7 @@ export const onRequestOptions = () =>
 const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
 export const onRequestGet = async ({ request, env }) => {
-  if (!env.rmp_leaderboard) {
+  if (!env.DB) {
     return jsonResponse({ ok: false, error: "Database not configured" }, 500);
   }
 
@@ -41,13 +41,13 @@ export const onRequestGet = async ({ request, env }) => {
   const limit = clamp(Number.isFinite(limitParam) ? limitParam : DEFAULT_LIMIT, 1, MAX_LIMIT);
   const offset = clamp(Number.isFinite(offsetParam) ? offsetParam : 0, 0, Number.MAX_SAFE_INTEGER);
 
-  const rows = await env.rmp_leaderboard.prepare(
+  const rows = await env.DB.prepare(
     "SELECT player_name as playerName, score FROM leaderboard_entries WHERE mode = ? ORDER BY score DESC, updated_at ASC LIMIT ? OFFSET ?"
   )
     .bind(mode, limit, offset)
     .all();
 
-  const totalRow = await env.rmp_leaderboard.prepare(
+  const totalRow = await env.DB.prepare(
     "SELECT COUNT(*) as count FROM leaderboard_entries WHERE mode = ?"
   )
     .bind(mode)
@@ -60,14 +60,14 @@ export const onRequestGet = async ({ request, env }) => {
 
   let playerRank = null;
   if (playerName && playerName.length <= MAX_NAME_LENGTH) {
-    const playerRow = await env.rmp_leaderboard.prepare(
+    const playerRow = await env.DB.prepare(
       "SELECT score, updated_at FROM leaderboard_entries WHERE player_name = ? AND mode = ?"
     )
       .bind(playerName, mode)
       .first();
 
     if (playerRow) {
-      const aheadRow = await env.rmp_leaderboard.prepare(
+      const aheadRow = await env.DB.prepare(
         "SELECT COUNT(*) as count FROM leaderboard_entries WHERE mode = ? AND (score > ? OR (score = ? AND updated_at < ?))"
       )
         .bind(mode, playerRow.score, playerRow.score, playerRow.updated_at)
