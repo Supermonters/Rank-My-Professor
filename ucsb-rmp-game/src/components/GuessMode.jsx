@@ -197,17 +197,17 @@ export default function GuessMode({ prof, onGuess, onExit, score, difficulty }) 
               {submitted && (
                 <div style={{ marginBottom: 24 }}>
                   <div style={{
-                    background: "#f5f5f5",
+                    background: "var(--light-gray)",
                     padding: 24,
                     borderRadius: 0,
                     marginBottom: 24
                   }}>
-                    <p style={{ margin: "0 0 12px 0", fontSize: "12px", color: "#666666" }}>Correct Rating</p>
+                    <p style={{ margin: "0 0 12px 0", fontSize: "12px", color: "var(--black)" }}>Correct Rating</p>
                     <div style={{
                       position: "relative",
                       width: "100%",
                       height: 40,
-                      background: "#e0e0e0",
+                      background: "var(--light-gray)",
                       borderRadius: 4,
                       overflow: "hidden"
                     }}>
@@ -217,7 +217,7 @@ export default function GuessMode({ prof, onGuess, onExit, score, difficulty }) 
                           left: 0,
                           top: 0,
                           height: "100%",
-                          background: "#4caf50",
+                          background: "var(--green)",
                           width: `${fillPercentage}%`,
                           transition: "width 0.03s linear",
                           display: "flex",
@@ -226,7 +226,7 @@ export default function GuessMode({ prof, onGuess, onExit, score, difficulty }) 
                           paddingRight: 12,
                           fontSize: "18px",
                           fontWeight: 700,
-                          color: "#ffffff"
+                          color: "var(--white)"
                         }}
                       >
                         {fillPercentage > 10 && `${prof.rating.toFixed(1)}`}

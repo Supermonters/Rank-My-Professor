@@ -62,3 +62,43 @@ input, select, textarea {
 #root {
   min-height: 100vh;
 }
+
+/*
+  Visual style system (canonical):
+
+  - Use only the color variables defined in :root for colors in components.
+    Allowed variables: --white, --light-gray, --primary-blue, --dark-blue,
+    --black, --green, --red, --yellow.
+
+  - Button rules:
+    * Primary: blue filled with white text. Use `.btn-primary` or `background: var(--primary-blue); color: var(--white)`.
+      On hover use `background: var(--dark-blue)`.
+    * Secondary (gray): light-gray background, blue text and thin blue outline.
+      Use `.btn-secondary` or `background: var(--light-gray); color: var(--primary-blue); border: 1px solid var(--primary-blue)`.
+      On hover: `background: var(--dark-blue); color: var(--white); border-color: var(--dark-blue)`.
+
+  - Surfaces / cards: use `background: var(--white)` or `background: var(--light-gray)` and avoid hardcoded hex.
+
+  - For contributors and automated tools (AI): do not add hardcoded hex colors. Reference these variables.
+*/
+
+/* Button utility classes */
+.btn-primary {
+  background: var(--primary-blue);
+  color: var(--white);
+  border: none;
+  border-radius: 30px;
+  padding: 12px 20px;
+  font-weight: 600;
+}
+.btn-primary:hover { background: var(--dark-blue); color: var(--white); }
+
+.btn-secondary {
+  background: var(--light-gray);
+  color: var(--primary-blue);
+  border: 1px solid var(--primary-blue);
+  border-radius: 30px;
+  padding: 12px 20px;
+  font-weight: 600;
+}
+.btn-secondary:hover { background: var(--dark-blue); color: var(--white); border-color: var(--dark-blue); }

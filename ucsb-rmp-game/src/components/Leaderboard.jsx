@@ -83,11 +83,11 @@ export default function Leaderboard({ playerName, onBack }) {
           {emoji} {title}
         </h3>
         {loading ? (
-          <p style={{ color: "#999", textAlign: "center", padding: "40px 20px" }}>Loading leaderboard...</p>
+          <p style={{ color: "var(--muted-2)", textAlign: "center", padding: "40px 20px" }}>Loading leaderboard...</p>
         ) : error ? (
           <p style={{ color: "var(--red)", textAlign: "center", padding: "40px 20px" }}>{error}</p>
         ) : sorted.length === 0 ? (
-          <p style={{ color: "#999", textAlign: "center", padding: "40px 20px" }}>No scores yet. Be the first!</p>
+          <p style={{ color: "var(--muted-2)", textAlign: "center", padding: "40px 20px" }}>No scores yet. Be the first!</p>
         ) : (
           <div>
             {playerRank && playerRank > 10 && (
