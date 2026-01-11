@@ -23,7 +23,7 @@ export default function GameOverModal({ mode, score, leftProf, rightProf, onRest
         color: "var(--primary-blue)",
         marginBottom: 12
       }}>
-        {prof.rating.toFixed(1)} ⭐
+        {prof.rating.toFixed(1)}
       </div>
       <a
         href={label === "Left" ? leftRmpUrl : rightRmpUrl}
