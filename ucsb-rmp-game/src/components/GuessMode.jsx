@@ -1,5 +1,13 @@
 import React, { useState, useMemo, useEffect } from "react";
 
+/* VISUAL STYLE APPLIED - See src/index.css for design documentation
+   - All colors use CSS variables (--white, --light-gray, --primary-blue, --dark-blue, --black)
+   - Primary buttons: var(--primary-blue) background with var(--dark-blue) on hover
+   - Fixed header: var(--black) background with var(--white) text, positioned at top: 0
+   - Cards: var(--white) background with var(--light-gray) for highlights
+   - Content padding-top: 80px to account for fixed header
+*/
+
 export default function GuessMode({ prof, onGuess, onExit, score, difficulty }) {
   const [guess, setGuess] = useState(2.5);
   const [submitted, setSubmitted] = useState(false);

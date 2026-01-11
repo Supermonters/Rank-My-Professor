@@ -1,5 +1,12 @@
 import React from "react";
 
+/* VISUAL STYLE APPLIED - See src/index.css for design documentation
+   - All colors use CSS variables (--white, --light-gray, --primary-blue, --dark-blue, --black)
+   - Primary buttons: var(--primary-blue) background with var(--dark-blue) on hover
+   - Fixed header: var(--black) background with var(--white) text, positioned at top: 0
+   - Cards: var(--white) background with var(--light-gray) for highlights
+*/
+
 export default function StartScreen({ playerName, setPlayerName, onStart }) {
   const canStart = playerName.trim().length > 0;
 

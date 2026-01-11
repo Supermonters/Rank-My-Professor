@@ -36,6 +36,49 @@ a:hover {
   color: var(--dark-blue);
 }
 
+/* ============================================================
+   VISUAL STYLE GUIDE FOR DEVELOPERS
+   ============================================================
+   
+   COLOR PALETTE:
+   - Use CSS variables (--white, --light-gray, --primary-blue, etc.)
+   - Never use hardcoded hex colors in components
+   
+   BUTTON STYLES:
+   1. PRIMARY BUTTON (blue filled):
+      - background: var(--primary-blue)
+      - color: var(--white)
+      - On hover: background: var(--dark-blue)
+      - borderRadius: 30 (pill-shaped)
+   
+   2. SECONDARY BUTTON (gray with blue outline):
+      - background: var(--light-gray)
+      - color: var(--primary-blue)
+      - border: 1px solid var(--primary-blue)
+      - On hover:
+        - background: var(--dark-blue)
+        - color: var(--white)
+        - border: 1px solid var(--dark-blue)
+      - borderRadius: 30 (pill-shaped)
+   
+   CONTAINERS & CARDS:
+   - borderRadius: 0 (sharp edges for boxes/containers)
+   - Use var(--white) for cards, var(--light-gray) for sections
+   - No hardcoded hex colors anywhere
+   
+   HEADERS:
+   - position: fixed, top: 0, left: 0, right: 0, zIndex: 1000
+   - background: var(--black)
+   - color: var(--white)
+   - Add padding-top: 80 to content below fixed headers
+   
+   FONTS:
+   - Font family: Inter (imported from Google Fonts)
+   - Use fontWeight: 600 for buttons/headings
+   - Apply font-family: 'Inter' explicitly if needed
+   
+   ============================================================ */
+
 button {
   border: none;
   padding: 10px 16px;
@@ -44,11 +87,49 @@ button {
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s ease;
-  font-family: inherit;
+  font-family: 'Inter', inherit;
 }
 
-button:hover {
-  opacity: 0.95;
+/* Primary button: solid blue background */
+.btn-primary {
+  background-color: var(--primary-blue);
+  color: var(--white);
+  border: none;
+  border-radius: 30px;
+  padding: 12px 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--dark-blue);
+}
+
+.btn-primary:active {
+  transform: scale(0.98);
+}
+
+/* Secondary button: gray background with blue outline and text */
+.btn-secondary {
+  background-color: var(--light-gray);
+  color: var(--primary-blue);
+  border: 1px solid var(--primary-blue);
+  border-radius: 30px;
+  padding: 12px 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background-color: var(--dark-blue);
+  color: var(--white);
+  border-color: var(--dark-blue);
+}
+
+.btn-secondary:active {
+  transform: scale(0.98);
 }
 
 button:active {
@@ -56,7 +137,7 @@ button:active {
 }
 
 input, select, textarea {
-  font-family: inherit;
+  font-family: 'Inter', inherit;
 }
 
 #root {

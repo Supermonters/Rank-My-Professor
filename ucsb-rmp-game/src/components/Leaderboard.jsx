@@ -1,5 +1,13 @@
 import React from "react";
 
+/* VISUAL STYLE APPLIED - See src/index.css for design documentation
+   - All colors use CSS variables (--white, --light-gray, --primary-blue, --dark-blue, --black)
+   - Fixed header: var(--black) background with var(--white) text, positioned at top: 0
+   - Tables: var(--white) background with var(--light-gray) alternate rows
+   - Secondary buttons: var(--light-gray) background with var(--primary-blue) border/text, var(--dark-blue) fill on hover
+   - Content padding-top: 80px to account for fixed header
+*/
+
 export default function Leaderboard({ playerName, onBack }) {
   const normalizedName = playerName.trim();
   const [leaderboards, setLeaderboards] = React.useState({ guess: [], higherlower: [] });

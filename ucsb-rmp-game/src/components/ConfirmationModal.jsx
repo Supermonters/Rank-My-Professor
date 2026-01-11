@@ -1,5 +1,12 @@
 import React from "react";
 
+/* VISUAL STYLE APPLIED - See src/index.css for design documentation
+   - All colors use CSS variables (--white, --light-gray, --primary-blue, --dark-blue, --black)
+   - Primary buttons: var(--primary-blue) background with var(--dark-blue) on hover
+   - Secondary buttons: var(--light-gray) background with var(--primary-blue) border/text, var(--dark-blue) fill on hover
+   - Modal: dark overlay with var(--white) centered card on var(--light-gray) background
+*/
+
 export default function ConfirmationModal({ message, onConfirm, onCancel }) {
   return (
     <div style={{
