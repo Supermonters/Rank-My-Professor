@@ -33,7 +33,7 @@ export default function GuessMode({ prof, onGuess, onExit, score, difficulty }) 
   // Reset form when new professor is loaded
   useEffect(() => {
     setSubmitted(false);
-    setGuess(2.5);
+    setGuess(3.0);
     setFillPercentage(0);
   }, [prof.id]);
 
