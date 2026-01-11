@@ -95,7 +95,7 @@ export default function GameOverModal({ mode, score, leftProf, rightProf, onRest
               {leftProf.name}
             </p>
             <p style={{ margin: "0 0 12px 0", fontSize: "18px", color: "var(--primary-blue)", fontWeight: 700 }}>
-              Actual Rating: {leftProf.rating.toFixed(1)} ⭐
+              Actual Rating: {leftProf.rating.toFixed(1)}
             </p>
             <a
               href={leftRmpUrl}
