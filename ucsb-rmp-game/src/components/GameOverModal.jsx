@@ -6,21 +6,21 @@ export default function GameOverModal({ mode, score, leftProf, rightProf, onRest
 
   const ProfessorCard = ({ prof, label }) => (
     <div style={{
-      background: "#f5f5f5",
+      background: "var(--light-gray)",
       borderRadius: 0,
       padding: 16,
       marginBottom: 8
     }}>
-      <p style={{ margin: "0 0 8px 0", fontSize: "15px", fontWeight: 600, color: "#333333" }}>
+      <p style={{ margin: "0 0 8px 0", fontSize: "15px", fontWeight: 600, color: "var(--black)" }}>
         {prof.name}
       </p>
-      <p style={{ margin: "0 0 12px 0", fontSize: "13px", color: "#666666" }}>
+      <p style={{ margin: "0 0 12px 0", fontSize: "13px", color: "var(--black)" }}>
         {prof.department}
       </p>
       <div style={{
         fontSize: "18px",
         fontWeight: 700,
-        color: "#0066cc",
+        color: "var(--primary-blue)",
         marginBottom: 12
       }}>
         {prof.rating.toFixed(1)} ⭐
@@ -32,16 +32,16 @@ export default function GameOverModal({ mode, score, leftProf, rightProf, onRest
         style={{
           display: "inline-block",
           padding: "8px 12px",
-          background: "#0066cc",
-          color: "#fff",
+          background: "var(--primary-blue)",
+          color: "var(--white)",
           textDecoration: "none",
           borderRadius: 20,
           fontSize: "12px",
           fontWeight: 600,
           transition: "background-color 0.2s"
         }}
-        onMouseEnter={(e) => e.target.style.backgroundColor = "#003399"}
-        onMouseLeave={(e) => e.target.style.backgroundColor = "#0066cc"}
+        onMouseEnter={(e) => e.target.style.backgroundColor = "var(--dark-blue)"}
+        onMouseLeave={(e) => e.target.style.backgroundColor = "var(--primary-blue)"}
       >
         View on RMP →
       </a>
@@ -60,8 +60,8 @@ export default function GameOverModal({ mode, score, leftProf, rightProf, onRest
     }}>
       {/* Header */}
       <div style={{
-        background: "#000000ff",
-        color: "#ffffff",
+        background: "var(--black)",
+        color: "var(--white)",
         padding: "10px 30px",
         display: "flex",
         alignItems: "center",
@@ -77,7 +77,7 @@ export default function GameOverModal({ mode, score, leftProf, rightProf, onRest
           style={{
             background: "none",
             border: "none",
-            color: "#ffffff",
+            color: "var(--white)",
             fontSize: "20px",
             cursor: "pointer",
             padding: 0,
@@ -99,34 +99,34 @@ export default function GameOverModal({ mode, score, leftProf, rightProf, onRest
         padding: "30px"
       }}>
         <div style={{
-          background: "#ffffff",
+          background: "var(--white)",
           padding: 40,
           borderRadius: 0,
           width: mode === "higherlower" ? 600 : 500,
           textAlign: "center",
           boxShadow: "0 10px 40px rgba(0, 0, 0, 0.2)",
-          color: "#333333",
+          color: "var(--black)",
         maxHeight: "90vh",
         overflowY: "auto"
       }}>
-        <p style={{ margin: "0 0 24px 0", color: "#666666", fontSize: "16px" }}>
-          Your Score: <span style={{ fontSize: "32px", fontWeight: 700, color: "#0066cc" }}>{score}</span>
+        <p style={{ margin: "0 0 24px 0", color: "var(--black)", fontSize: "16px" }}>
+          Your Score: <span style={{ fontSize: "32px", fontWeight: 700, color: "var(--primary-blue)" }}>{score}</span>
         </p>
 
         {mode === "guess" && leftProf && (
           <div style={{
             margin: "24px 0",
             padding: "16px",
-            background: "#f5f5f5",
+            background: "var(--light-gray)",
             borderRadius: 0
           }}>
-            <p style={{ margin: "0 0 12px 0", color: "#666666", fontSize: "13px", fontWeight: 600 }}>
+            <p style={{ margin: "0 0 12px 0", color: "var(--black)", fontSize: "13px", fontWeight: 600 }}>
               Professor Guessed:
             </p>
-            <p style={{ margin: "0 0 12px 0", fontSize: "18px", fontWeight: 700, color: "#333333" }}>
+            <p style={{ margin: "0 0 12px 0", fontSize: "18px", fontWeight: 700, color: "var(--black)" }}>
               {leftProf.name}
             </p>
-            <p style={{ margin: "0 0 12px 0", fontSize: "18px", color: "#0066cc", fontWeight: 700 }}>
+            <p style={{ margin: "0 0 12px 0", fontSize: "18px", color: "var(--primary-blue)", fontWeight: 700 }}>
               Actual Rating: {leftProf.rating.toFixed(1)} ⭐
             </p>
             <a
@@ -137,16 +137,16 @@ export default function GameOverModal({ mode, score, leftProf, rightProf, onRest
                 display: "inline-block",
                 marginTop: 12,
                 padding: "8px 16px",
-                background: "#0066cc",
-                color: "#fff",
+                background: "var(--primary-blue)",
+                color: "var(--white)",
                 textDecoration: "none",
                 borderRadius: 20,
                 fontSize: "13px",
                 fontWeight: 600,
                 transition: "background-color 0.2s"
               }}
-              onMouseEnter={(e) => e.target.style.backgroundColor = "#003399"}
-              onMouseLeave={(e) => e.target.style.backgroundColor = "#0066cc"}
+              onMouseEnter={(e) => e.target.style.backgroundColor = "var(--dark-blue)"}
+              onMouseLeave={(e) => e.target.style.backgroundColor = "var(--primary-blue)"}
             >
               View on RateMyProfessors →
             </a>
@@ -157,10 +157,10 @@ export default function GameOverModal({ mode, score, leftProf, rightProf, onRest
           <div style={{
             margin: "24px 0",
             padding: "16px",
-            background: "#f5f5f5",
+            background: "var(--light-gray)",
             borderRadius: 0
           }}>
-            <p style={{ margin: "0 0 16px 0", color: "#666666", fontSize: "13px", fontWeight: 600 }}>
+            <p style={{ margin: "0 0 16px 0", color: "var(--black)", fontSize: "13px", fontWeight: 600 }}>
               Professor Ratings Comparison:
             </p>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
@@ -180,16 +180,16 @@ export default function GameOverModal({ mode, score, leftProf, rightProf, onRest
             style={{
               padding: "12px 24px",
               fontSize: "16px",
-              background: "#0066cc",
-              color: "#ffffff",
+              background: "var(--primary-blue)",
+              color: "var(--white)",
               border: "none",
               borderRadius: 30,
               cursor: "pointer",
               fontWeight: 600,
               transition: "background-color 0.2s"
             }}
-            onMouseEnter={(e) => e.target.style.backgroundColor = "#003399"}
-            onMouseLeave={(e) => e.target.style.backgroundColor = "#0066cc"}
+            onMouseEnter={(e) => e.target.style.backgroundColor = "var(--dark-blue)"}
+            onMouseLeave={(e) => e.target.style.backgroundColor = "var(--primary-blue)"}
           >
             Play Again
           </button>
@@ -198,16 +198,24 @@ export default function GameOverModal({ mode, score, leftProf, rightProf, onRest
             style={{
               padding: "12px 24px",
               fontSize: "16px",
-              background: "#f5f5f5",
-              color: "#333333",
-              border: "1px solid #e0e0e0",
+              background: "var(--light-gray)",
+              color: "var(--primary-blue)",
+              border: "1px solid var(--primary-blue)",
               borderRadius: 30,
               cursor: "pointer",
               fontWeight: 600,
               transition: "all 0.2s"
             }}
-            onMouseEnter={(e) => e.target.style.backgroundColor = "#eeeeee"}
-            onMouseLeave={(e) => e.target.style.backgroundColor = "#f5f5f5"}
+            onMouseEnter={(e) => {
+              e.target.style.backgroundColor = "var(--dark-blue)";
+              e.target.style.color = "var(--white)";
+              e.target.style.borderColor = "var(--dark-blue)";
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.backgroundColor = "var(--light-gray)";
+              e.target.style.color = "var(--primary-blue)";
+              e.target.style.borderColor = "var(--primary-blue)";
+            }}
           >
             Back to Menu
           </button>

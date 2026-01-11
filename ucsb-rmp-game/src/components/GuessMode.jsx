@@ -46,11 +46,11 @@ export default function GuessMode({ prof, onGuess, onExit, score }) {
   };
 
   return (
-    <div style={{ background: "#fafafa", minHeight: "100vh", paddingBottom: 40, display: "flex", flexDirection: "column" }}>
+    <div style={{ background: "var(--light-gray)", minHeight: "100vh", paddingBottom: 40, display: "flex", flexDirection: "column" }}>
       {/* Header */}
       <div style={{
-        background: "#000000ff",
-        color: "#ffffff",
+        background: "var(--black)",
+        color: "var(--white)",
         padding: "10px 30px",
         display: "flex",
         alignItems: "center",
@@ -68,7 +68,7 @@ export default function GuessMode({ prof, onGuess, onExit, score }) {
           style={{
             background: "none",
             border: "none",
-            color: "#ffffff",
+            color: "var(--white)",
             fontSize: "20px",
             cursor: "pointer",
             padding: 0,
@@ -93,28 +93,28 @@ export default function GuessMode({ prof, onGuess, onExit, score }) {
             <div style={{
               fontSize: "16px",
               fontWeight: 600,
-              color: "#333333",
+              color: "var(--black)",
               marginBottom: "20px"
             }}>
-              Score: <span style={{ color: "#0066cc", fontSize: "18px" }}>{score}</span>
+              Score: <span style={{ color: "var(--primary-blue)", fontSize: "18px" }}>{score}</span>
             </div>
 
             {/* Professor Info & Reviews */}
             <div style={{
-              background: "#ffffff",
+              background: "var(--white)",
               borderRadius: 0,
               padding: 24
             }}>
-            <h3 style={{ margin: "0 0 8px 0", fontSize: "24px", fontWeight: 700, color: "#333333" }}>
+            <h3 style={{ margin: "0 0 8px 0", fontSize: "24px", fontWeight: 700, color: "var(--black)" }}>
               {prof.name}
             </h3>
-            <p style={{ margin: "0 0 16px 0", fontSize: "14px", color: "#666666" }}>
+            <p style={{ margin: "0 0 16px 0", fontSize: "14px", color: "var(--black)" }}>
               Department: {prof.department}
             </p>
             
            
 
-            <h4 style={{ margin: "0 0 16px 0", fontSize: "14px", fontWeight: 600, color: "#333333" }}>
+            <h4 style={{ margin: "0 0 16px 0", fontSize: "14px", fontWeight: 600, color: "var(--black)" }}>
               Student Reviews
             </h4>
             <div style={{ maxHeight: "450px", overflowY: "auto", paddingRight: 8 }}>
@@ -126,21 +126,21 @@ export default function GuessMode({ prof, onGuess, onExit, score }) {
                     padding: 12,
                     borderRadius: 0,
                     fontSize: "13px",
-                    background: "#fafafa"
+                    background: "var(--light-gray)"
                   }}
                 >
-                  <p style={{ margin: "0 0 8px 0", fontStyle: "italic", color: "#333333", lineHeight: "1.5" }}>
+                  <p style={{ margin: "0 0 8px 0", fontStyle: "italic", color: "var(--black)", lineHeight: "1.5" }}>
                     "{comment.comment}"
                   </p>
                   <div style={{
                     fontSize: "12px",
-                    color: "#666666",
+                    color: "var(--black)",
                     margin: "8px 0 0 0"
                   }}>
                     <span style={{ marginRight: 12 }}>📚 {comment.class}</span>
                     <span>Grade: {comment.grade}</span>
                   </div>
-                  <div style={{ fontSize: "12px", color: "#666666", marginTop: 4 }}>
+                  <div style={{ fontSize: "12px", color: "var(--black)", marginTop: 4 }}>
                     <span style={{ marginRight: 12 }}>
                       💡 Clarity: {comment.clarityRating}/5
                     </span>
@@ -157,35 +157,35 @@ export default function GuessMode({ prof, onGuess, onExit, score }) {
 
           {/* Guess Input */}
           <div style={{
-            background: "#ffffff",
+            background: "var(--white)",
             borderRadius: 0,
             padding: 24,
             display: "flex",
             flexDirection: "column"
           }}>
-            <h3 style={{ margin: "0 0 24px 0", fontSize: "24px", fontWeight: 700, color: "#333333" }}>
+            <h3 style={{ margin: "0 0 24px 0", fontSize: "24px", fontWeight: 700, color: "var(--black)" }}>
               What's the rating?
             </h3>
 
             <div style={{ flex: 1 }}>
               <div style={{
-                background: "#f5f5f5",
+                background: "var(--light-gray)",
                 padding: 24,
                 borderRadius: 0,
                 textAlign: "center",
                 marginBottom: 24
               }}>
-                <p style={{ margin: "0 0 8px 0", fontSize: "12px", color: "#666666" }}>Your Guess</p>
+                <p style={{ margin: "0 0 8px 0", fontSize: "12px", color: "var(--black)" }}>Your Guess</p>
                 <p style={{
                   margin: 0,
                   fontSize: "48px",
                   fontWeight: 700,
-                  color: "#0066cc"
+                  color: "var(--primary-blue)"
                 }}>
                   {parseFloat(guess).toFixed(1)}
                 </p>
-                <p style={{ margin: "8px 0 0 0", fontSize: "18px", color: "#ffc107" }}>
-                  {"⭐".repeat(Math.floor(parseFloat(guess)))}
+                <p style={{ margin: "8px 0 0 0", fontSize: "18px", color: "var(--yellow)" }}>
+                  {"⭐".repeat(Math.round(parseFloat(guess)))}
                 </p>
               </div>
 
@@ -237,7 +237,7 @@ export default function GuessMode({ prof, onGuess, onExit, score }) {
                 marginBottom: 16,
                 fontSize: "14px",
                 fontWeight: 600,
-                color: "#333333"
+                color: "var(--black)"
               }}>
                 Adjust Rating
               </label>
@@ -253,8 +253,8 @@ export default function GuessMode({ prof, onGuess, onExit, score }) {
                 style={{
                   width: "100%",
                   height: 6,
-                  cursor: submitted ? "not-allowed" : "pointer",
-                  background: "#e0e0e0",
+                  cursor: "pointer",
+                  background: "var(--light-gray)",
                   borderRadius: 3,
                   WebkitAppearance: "none",
                   appearance: "none",
@@ -267,18 +267,18 @@ export default function GuessMode({ prof, onGuess, onExit, score }) {
                   width: 24px;
                   height: 24px;
                   border-radius: 50%;
-                  background: #0066cc;
+                  background: var(--primary-blue);
                   cursor: pointer;
-                  box-shadow: 0 2px 4px rgba(0, 102, 204, 0.3);
+                  box-shadow: 0 2px 4px rgba(0, 85, 253, 0.3);
                 }
                 input[type="range"]::-moz-range-thumb {
                   width: 24px;
                   height: 24px;
                   border-radius: 50%;
-                  background: #0066cc;
+                  background: var(--primary-blue);
                   cursor: pointer;
                   border: none;
-                  box-shadow: 0 2px 4px rgba(0, 102, 204, 0.3);
+                  box-shadow: 0 2px 4px rgba(0, 85, 253, 0.3);
                 }
               `}</style>
 
@@ -286,7 +286,7 @@ export default function GuessMode({ prof, onGuess, onExit, score }) {
                 display: "flex",
                 justifyContent: "space-between",
                 fontSize: "12px",
-                color: "#666666",
+                color: "var(--black)",
                 marginTop: 8,
                 marginBottom: 24
               }}>
@@ -302,8 +302,8 @@ export default function GuessMode({ prof, onGuess, onExit, score }) {
                 style={{
                   flex: 1,
                   padding: "14px 20px",
-                  background: submitted ? "#cccccc" : "#0066cc",
-                  color: "#ffffff",
+                  background: "var(--primary-blue)",
+                  color: "var(--white)",
                   border: "none",
                   borderRadius: 30,
                   cursor: submitted ? "not-allowed" : "pointer",
@@ -311,8 +311,8 @@ export default function GuessMode({ prof, onGuess, onExit, score }) {
                   fontWeight: 600,
                   transition: "background-color 0.2s"
                 }}
-                onMouseEnter={(e) => !submitted && (e.target.style.backgroundColor = "#003399")}
-                onMouseLeave={(e) => !submitted && (e.target.style.backgroundColor = "#0066cc")}
+                onMouseEnter={(e) => e.target.style.backgroundColor = "var(--dark-blue)"}
+                onMouseLeave={(e) => e.target.style.backgroundColor = "var(--primary-blue)"}
               >
                 {submitted ? "Submitted" : "Submit Answer"}
               </button>

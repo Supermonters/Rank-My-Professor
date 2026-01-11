@@ -4,11 +4,11 @@ export default function StartScreen({ playerName, setPlayerName, onStart }) {
   const canStart = playerName.trim().length > 0;
 
   return (
-    <div style={{ background: "#fafafa", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+    <div style={{ background: "var(--light-gray)", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
       {/* Header */}
       <div style={{
-        background: "#000000ff",
-        color: "#ffffff",
+        background: "var(--black)",
+        color: "var(--white)",
         padding: "10px 30px",
         display: "flex",
         alignItems: "center",
@@ -37,7 +37,7 @@ export default function StartScreen({ playerName, setPlayerName, onStart }) {
         width: "100%"
       }}>
         <div style={{
-          background: "#ffffff",
+          background: "var(--white)",
           borderRadius: 0,
           padding: 40,
           boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
@@ -46,7 +46,7 @@ export default function StartScreen({ playerName, setPlayerName, onStart }) {
           <h1 style={{ 
             textAlign: "center", 
             margin: "0 0 12px 0", 
-            color: "#333333",
+            color: "var(--black)",
             fontSize: "32px",
             fontWeight: 700
           }}>
@@ -55,7 +55,7 @@ export default function StartScreen({ playerName, setPlayerName, onStart }) {
           <p style={{ 
             textAlign: "center", 
             margin: "0 0 32px 0", 
-            color: "#666666",
+            color: "var(--black)",
             fontSize: "16px"
           }}>
             Test your knowledge of UCSB professors
@@ -67,7 +67,7 @@ export default function StartScreen({ playerName, setPlayerName, onStart }) {
               marginBottom: 8,
               fontSize: "14px",
               fontWeight: 600,
-              color: "#333333"
+              color: "var(--black)"
             }}>
               Enter your name
             </label>
@@ -92,8 +92,8 @@ export default function StartScreen({ playerName, setPlayerName, onStart }) {
             style={{
               width: "100%",
               padding: "14px 20px",
-              background: canStart ? "#0066cc" : "#cccccc",
-              color: "#ffffff",
+              background: canStart ? "var(--primary-blue)" : "var(--light-gray)",
+              color: "var(--white)",
               border: "none",
               borderRadius: 30,
               fontSize: "16px",

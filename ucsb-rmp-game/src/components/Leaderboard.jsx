@@ -79,28 +79,28 @@ export default function Leaderboard({ playerName, onBack }) {
 
     return (
       <div style={{ flex: 1, minWidth: 400 }}>
-        <h3 style={{ marginBottom: 20, color: "#0066cc", fontSize: "18px", fontWeight: 700 }}>
+        <h3 style={{ marginBottom: 20, color: "var(--primary-blue)", fontSize: "18px", fontWeight: 700 }}>
           {emoji} {title}
         </h3>
         {loading ? (
           <p style={{ color: "#999", textAlign: "center", padding: "40px 20px" }}>Loading leaderboard...</p>
         ) : error ? (
-          <p style={{ color: "#cc0000", textAlign: "center", padding: "40px 20px" }}>{error}</p>
+          <p style={{ color: "var(--red)", textAlign: "center", padding: "40px 20px" }}>{error}</p>
         ) : sorted.length === 0 ? (
           <p style={{ color: "#999", textAlign: "center", padding: "40px 20px" }}>No scores yet. Be the first!</p>
         ) : (
           <div>
             {playerRank && playerRank > 10 && (
-              <p style={{ margin: "0 0 16px 0", color: "#666666", fontSize: "13px" }}>
+              <p style={{ margin: "0 0 16px 0", color: "var(--black)", fontSize: "13px" }}>
                 Your rank: #{playerRank}
               </p>
             )}
             <table style={{ width: "100%", borderCollapse: "collapse" }}>
               <thead>
-                <tr style={{ background: "#f5f5f5" }}>
-                  <th style={{ padding: "12px 16px", textAlign: "left", fontSize: "13px", fontWeight: 600, color: "#666666" }}>Rank</th>
-                  <th style={{ padding: "12px 16px", textAlign: "left", fontSize: "13px", fontWeight: 600, color: "#666666" }}>Player</th>
-                  <th style={{ padding: "12px 16px", textAlign: "right", fontSize: "13px", fontWeight: 600, color: "#666666" }}>Score</th>
+                <tr style={{ background: "var(--light-gray)" }}>
+                  <th style={{ padding: "12px 16px", textAlign: "left", fontSize: "13px", fontWeight: 600, color: "var(--black)" }}>Rank</th>
+                  <th style={{ padding: "12px 16px", textAlign: "left", fontSize: "13px", fontWeight: 600, color: "var(--black)" }}>Player</th>
+                  <th style={{ padding: "12px 16px", textAlign: "right", fontSize: "13px", fontWeight: 600, color: "var(--black)" }}>Score</th>
                 </tr>
               </thead>
               <tbody>
@@ -110,14 +110,14 @@ export default function Leaderboard({ playerName, onBack }) {
                     <tr
                       key={index}
                       style={{
-                        background: isCurrentPlayer ? "#f0f7ff" : index % 2 === 0 ? "#ffffff" : "#fafafa"
+                        background: isCurrentPlayer ? "var(--light-gray)" : index % 2 === 0 ? "var(--white)" : "var(--light-gray)"
                       }}
                     >
                       <td style={{
                         padding: "12px 16px",
                         fontSize: "14px",
                         fontWeight: isCurrentPlayer ? 700 : 600,
-                        color: index === 0 ? "#ffc107" : index === 1 ? "#c0c0c0" : index === 2 ? "#cd7f32" : "#666666"
+                        color: index === 0 ? "var(--yellow)" : index === 1 ? "var(--light-gray)" : index === 2 ? "var(--yellow)" : "var(--black)"
                       }}>
                         {index === 0 && "🥇"}
                         {index === 1 && "🥈"}
@@ -128,7 +128,7 @@ export default function Leaderboard({ playerName, onBack }) {
                         padding: "12px 16px",
                         fontSize: "14px",
                         fontWeight: isCurrentPlayer ? 700 : 600,
-                        color: isCurrentPlayer ? "#0066cc" : "#333333"
+                        color: isCurrentPlayer ? "var(--primary-blue)" : "var(--black)"
                       }}>
                         {entry.playerName}
                         {isCurrentPlayer && " (You)"}
@@ -138,7 +138,7 @@ export default function Leaderboard({ playerName, onBack }) {
                         textAlign: "right",
                         fontSize: "14px",
                         fontWeight: 700,
-                        color: "#0066cc"
+                        color: "var(--primary-blue)"
                       }}>
                         {entry.score}
                       </td>
@@ -154,11 +154,11 @@ export default function Leaderboard({ playerName, onBack }) {
   };
 
   return (
-    <div style={{ background: "#fafafa", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+    <div style={{ background: "var(--light-gray)", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
       {/* Header */}
       <div style={{
-        background: "#000000ff",
-        color: "#ffffff",
+        background: "var(--black)",
+        color: "var(--white)",
         padding: "10px 30px",
         display: "flex",
         alignItems: "center",
@@ -176,7 +176,7 @@ export default function Leaderboard({ playerName, onBack }) {
           style={{
             background: "none",
             border: "none",
-            color: "#ffffff",
+            color: "var(--white)",
             fontSize: "20px",
             cursor: "pointer",
             padding: 0,
@@ -196,7 +196,7 @@ export default function Leaderboard({ playerName, onBack }) {
       <div style={{ flex: 1, maxWidth: 1200, margin: "0 auto", padding: "40px 30px", paddingTop: 80, width: "100%", boxSizing: "border-box" }}>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 30, marginBottom: 40 }}>
           <div style={{
-            background: "#ffffff",
+            background: "var(--white)",
             borderRadius: 0,
             padding: 24
           }}>
@@ -204,7 +204,7 @@ export default function Leaderboard({ playerName, onBack }) {
           </div>
 
           <div style={{
-            background: "#ffffff",
+            background: "var(--white)",
             borderRadius: 0,
             padding: 24
           }}>
