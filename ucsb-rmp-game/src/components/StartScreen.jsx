@@ -14,7 +14,12 @@ export default function StartScreen({ playerName, setPlayerName, onStart }) {
         alignItems: "center",
         justifyContent: "center",
         width: "100%",
-        boxSizing: "border-box"
+        boxSizing: "border-box",
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 1000
       }}>
         <h1 style={{ margin: 0, fontSize: "24px", fontWeight: 700 }}>RMP Game</h1>
       </div>
@@ -24,6 +29,7 @@ export default function StartScreen({ playerName, setPlayerName, onStart }) {
         maxWidth: 600, 
         margin: "0 auto", 
         padding: "60px 30px",
+        paddingTop: 110,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",

@@ -26,7 +26,12 @@ export default function GuessMode({ prof, onGuess, onExit, score }) {
         alignItems: "center",
         justifyContent: "space-between",
         width: "100%",
-        boxSizing: "border-box"
+        boxSizing: "border-box",
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 1000
       }}>
         <button
           onClick={onExit}
@@ -48,7 +53,7 @@ export default function GuessMode({ prof, onGuess, onExit, score }) {
       </div>
 
       {/* Content */}
-      <div style={{ flex: 1, maxWidth: 1200, margin: "0 auto", padding: "30px", width: "100%", boxSizing: "border-box" }}>
+      <div style={{ flex: 1, maxWidth: 1200, margin: "0 auto", padding: "30px", paddingTop: 80, width: "100%", boxSizing: "border-box" }}>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 30 }}>
           {/* Score - Left Aligned */}
           <div style={{

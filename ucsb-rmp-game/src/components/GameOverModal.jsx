@@ -67,7 +67,10 @@ export default function GameOverModal({ mode, score, leftProf, rightProf, onRest
         alignItems: "center",
         justifyContent: "space-between",
         width: "100%",
-        boxSizing: "border-box"
+        boxSizing: "border-box",
+        position: "sticky",
+        top: 0,
+        zIndex: 1000
       }}>
         <button
           onClick={onGoBackToMenu}

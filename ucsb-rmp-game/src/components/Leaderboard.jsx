@@ -164,7 +164,12 @@ export default function Leaderboard({ playerName, onBack }) {
         alignItems: "center",
         justifyContent: "space-between",
         width: "100%",
-        boxSizing: "border-box"
+        boxSizing: "border-box",
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 1000
       }}>
         <button
           onClick={onBack}
@@ -188,7 +193,7 @@ export default function Leaderboard({ playerName, onBack }) {
       </div>
 
       {/* Content */}
-      <div style={{ flex: 1, maxWidth: 1200, margin: "0 auto", padding: "40px 30px", width: "100%", boxSizing: "border-box" }}>
+      <div style={{ flex: 1, maxWidth: 1200, margin: "0 auto", padding: "40px 30px", paddingTop: 80, width: "100%", boxSizing: "border-box" }}>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 30, marginBottom: 40 }}>
           <div style={{
             background: "#ffffff",

@@ -8,13 +8,18 @@ export default function ModeSelect({ playerName, setMode, onViewLeaderboard }) {
         background: "#000000ff",
         color: "#ffffff",
         padding: "10px 10px",
-        textAlign: "center"
+        textAlign: "center",
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 1000
       }}>
         <h1 style={{ margin: 0, fontSize: "24px", fontWeight: 700 }}>Select Gamemode</h1>
       </div>
 
       {/* Content */}
-      <div style={{ maxWidth: 1000, margin: "0 auto", padding: "40px 30px" }}>
+      <div style={{ maxWidth: 1000, margin: "0 auto", padding: "40px 30px", paddingTop: 80 }}>
 
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
           {/* Guess Mode Card */}
