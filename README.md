@@ -1,6 +1,7 @@
 # Rank My Professor Game
 
 Parody game of Rate My Professor. Made for SB Hacks XII.
+Play Here: https://rankmyprofessor.pages.dev/
 
 ## Features
 
