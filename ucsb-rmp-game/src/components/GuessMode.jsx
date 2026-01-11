@@ -19,7 +19,7 @@ export default function GuessMode({ prof, onGuess, onExit, score, difficulty }) 
   const comments = useMemo(() => {
     if (!prof.ratings || prof.ratings.length === 0) return [];
     const shuffled = [...prof.ratings].sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, 6);
+    return shuffled.slice(0, 3);
   }, [prof]);
 
   // Animate the green bar fill on submit

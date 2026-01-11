@@ -143,7 +143,7 @@ export default function App() {
     if (confirmAction === "exit") {
       setLost(false);
       setMode(null);
-      setDifficulty(null);
+      setDifficulty("normal");
       setQuestionCount(0);
       setScore(0);
     }
@@ -169,7 +169,7 @@ export default function App() {
     await submitScoreToLeaderboard(score);
     setScore(0);
     setLost(false);
-    setDifficulty(null);
+    setDifficulty("normal");
     setMode(null);
     setViewingLeaderboard(false);
     setLeftProf(randomProf());
