@@ -1,6 +1,8 @@
 import React from "react";
 
 export default function StartScreen({ playerName, setPlayerName, onStart }) {
+  const canStart = playerName.trim().length > 0;
+
   return (
     <div style={{ background: "#fafafa", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
       {/* Header */}
@@ -67,6 +69,7 @@ export default function StartScreen({ playerName, setPlayerName, onStart }) {
               placeholder="e.g., John Doe"
               value={playerName}
               onChange={(e) => setPlayerName(e.target.value)}
+              maxLength={32}
               style={{
                 width: "100%",
                 padding: "12px 16px",
@@ -78,18 +81,18 @@ export default function StartScreen({ playerName, setPlayerName, onStart }) {
           </div>
 
           <button
-            disabled={!playerName}
+            disabled={!canStart}
             onClick={onStart}
             style={{
               width: "100%",
               padding: "14px 20px",
-              background: playerName ? "#0066cc" : "#cccccc",
+              background: canStart ? "#0066cc" : "#cccccc",
               color: "#ffffff",
               border: "none",
               borderRadius: 30,
               fontSize: "16px",
               fontWeight: 600,
-              cursor: playerName ? "pointer" : "not-allowed",
+              cursor: canStart ? "pointer" : "not-allowed",
               transition: "background-color 0.2s"
             }}
           >

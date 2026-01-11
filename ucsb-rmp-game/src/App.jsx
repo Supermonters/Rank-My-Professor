@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import StartScreen from "./components/StartScreen";
 import ModeSelect from "./components/ModeSelect";
@@ -21,6 +21,7 @@ export default function App() {
   const [professors, setProfessors] = useState([]);
   const [leftProf, setLeftProf] = useState(null);
   const [rightProf, setRightProf] = useState(null);
+  const lastSubmissionRef = useRef(null);
 
   useEffect(() => {
     async function load() {
@@ -50,21 +51,36 @@ export default function App() {
   const randomProf = () =>
     professors[Math.floor(Math.random() * professors.length)];
 
-  const saveScoreToLeaderboard = (finalScore) => {
+  const submitScoreToLeaderboard = async (finalScore) => {
+    const trimmedName = playerName.trim();
+    const modeKey = mode === "guess" ? "guess" : mode === "higherlower" ? "higherlower" : null;
+
+    if (!trimmedName || !modeKey || !Number.isInteger(finalScore)) {
+      return;
+    }
+
+    const submissionKey = `${trimmedName}|${modeKey}|${finalScore}`;
+    if (lastSubmissionRef.current === submissionKey) {
+      return;
+    }
+    lastSubmissionRef.current = submissionKey;
+
     try {
-      const leaderboards = JSON.parse(localStorage.getItem("rmp_leaderboards")) || { guess: [], higherlower: [] };
-      const modeKey = mode === "guess" ? "guess" : "higherlower";
-      const existingIndex = leaderboards[modeKey].findIndex(entry => entry.playerName === playerName);
-      if (existingIndex !== -1) {
-        if (finalScore > leaderboards[modeKey][existingIndex].score) {
-          leaderboards[modeKey][existingIndex].score = finalScore;
-        }
-      } else {
-        leaderboards[modeKey].push({ playerName, score: finalScore });
+      const res = await fetch("/api/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          playerName: trimmedName,
+          score: finalScore,
+          mode: modeKey
+        })
+      });
+
+      if (!res.ok) {
+        throw new Error(`Submit failed: ${res.status}`);
       }
-      localStorage.setItem("rmp_leaderboards", JSON.stringify(leaderboards));
     } catch (e) {
-      console.error("Failed to save leaderboard:", e);
+      console.error("Failed to submit leaderboard:", e);
     }
   };
 
@@ -115,7 +131,7 @@ export default function App() {
   };
 
   const restartGame = () => {
-    saveScoreToLeaderboard(score);
+    void submitScoreToLeaderboard(score);
     setScore(0);
     setLost(false);
     setLeftProf(randomProf());
@@ -123,7 +139,7 @@ export default function App() {
   };
 
   const goBackToMenu = () => {
-    saveScoreToLeaderboard(score);
+    void submitScoreToLeaderboard(score);
     setScore(0);
     setLost(false);
     setMode(null);

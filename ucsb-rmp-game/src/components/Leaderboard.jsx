@@ -1,26 +1,100 @@
 import React from "react";
 
 export default function Leaderboard({ playerName, onBack }) {
+  const normalizedName = playerName.trim();
   const [leaderboards, setLeaderboards] = React.useState({ guess: [], higherlower: [] });
+  const [meta, setMeta] = React.useState({
+    guess: { total: 0, playerRank: null },
+    higherlower: { total: 0, playerRank: null }
+  });
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState("");
 
   React.useEffect(() => {
-    const saved = localStorage.getItem("rmp_leaderboards");
-    if (saved) setLeaderboards(JSON.parse(saved));
-  }, []);
+    let cancelled = false;
+
+    const loadLeaderboards = async () => {
+      setLoading(true);
+      setError("");
+
+      try {
+        const params = new URLSearchParams({ limit: "10" });
+        if (normalizedName) {
+          params.set("playerName", normalizedName);
+        }
+
+        const [guessRes, higherRes] = await Promise.all([
+          fetch(`/api/leaderboard?mode=guess&${params.toString()}`),
+          fetch(`/api/leaderboard?mode=higherlower&${params.toString()}`)
+        ]);
+
+        if (!guessRes.ok || !higherRes.ok) {
+          throw new Error("Failed to load leaderboards");
+        }
+
+        const [guessData, higherData] = await Promise.all([
+          guessRes.json(),
+          higherRes.json()
+        ]);
+
+        if (cancelled) {
+          return;
+        }
+
+        setLeaderboards({
+          guess: guessData.entries || [],
+          higherlower: higherData.entries || []
+        });
+        setMeta({
+          guess: {
+            total: guessData.total ?? 0,
+            playerRank: guessData.playerRank ?? null
+          },
+          higherlower: {
+            total: higherData.total ?? 0,
+            playerRank: higherData.playerRank ?? null
+          }
+        });
+      } catch (e) {
+        if (!cancelled) {
+          setError("Unable to load the online leaderboard right now.");
+        }
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+        }
+      }
+    };
+
+    void loadLeaderboards();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [normalizedName]);
 
   const LeaderboardTable = ({ mode, title, emoji }) => {
     const sorted = [...leaderboards[mode]].sort((a, b) => b.score - a.score).slice(0, 10);
-    const currentPlayerRank = sorted.findIndex(entry => entry.playerName === playerName) + 1;
+    const playerRank = meta[mode]?.playerRank;
 
     return (
       <div style={{ flex: 1, minWidth: 400 }}>
         <h3 style={{ marginBottom: 20, color: "#0066cc", fontSize: "18px", fontWeight: 700 }}>
           {emoji} {title}
         </h3>
-        {sorted.length === 0 ? (
+        {loading ? (
+          <p style={{ color: "#999", textAlign: "center", padding: "40px 20px" }}>Loading leaderboard...</p>
+        ) : error ? (
+          <p style={{ color: "#cc0000", textAlign: "center", padding: "40px 20px" }}>{error}</p>
+        ) : sorted.length === 0 ? (
           <p style={{ color: "#999", textAlign: "center", padding: "40px 20px" }}>No scores yet. Be the first!</p>
         ) : (
           <div>
+            {playerRank && playerRank > 10 && (
+              <p style={{ margin: "0 0 16px 0", color: "#666666", fontSize: "13px" }}>
+                Your rank: #{playerRank}
+              </p>
+            )}
             <table style={{ width: "100%", borderCollapse: "collapse" }}>
               <thead>
                 <tr style={{ background: "#f5f5f5" }}>
@@ -31,7 +105,7 @@ export default function Leaderboard({ playerName, onBack }) {
               </thead>
               <tbody>
                 {sorted.map((entry, index) => {
-                  const isCurrentPlayer = entry.playerName === playerName;
+                  const isCurrentPlayer = entry.playerName === normalizedName;
                   return (
                     <tr
                       key={index}

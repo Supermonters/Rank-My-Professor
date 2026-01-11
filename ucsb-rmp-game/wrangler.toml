@@ -1,0 +1,8 @@
+name = "ucsb-rmp-game"
+compatibility_date = "2024-11-01"
+
+[[d1_databases]]
+binding = "rmp_leaderboard"
+database_name = "rmp-leaderboard"
+database_id = "0cdcbdc4-dd06-44d3-b4f8-e372eb93bfab"
+migrations_dir = "d1/migrations"
