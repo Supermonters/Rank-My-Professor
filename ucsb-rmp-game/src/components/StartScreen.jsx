@@ -21,7 +21,7 @@ export default function StartScreen({ playerName, setPlayerName, onStart }) {
         right: 0,
         zIndex: 1000
       }}>
-        <h1 style={{ margin: 0, fontSize: "24px", fontWeight: 700 }}>RMP Game</h1>
+        <h1 style={{ margin: 0, fontSize: "24px", fontWeight: 700 }}>Rank My Professor</h1>
       </div>
 
       <div style={{ 
@@ -50,7 +50,7 @@ export default function StartScreen({ playerName, setPlayerName, onStart }) {
             fontSize: "32px",
             fontWeight: 700
           }}>
-            🎓 RMP Game
+            Rank My Professor
           </h1>
           <p style={{ 
             textAlign: "center", 
@@ -93,7 +93,7 @@ export default function StartScreen({ playerName, setPlayerName, onStart }) {
               width: "100%",
               padding: "14px 20px",
               background: canStart ? "var(--primary-blue)" : "var(--light-gray)",
-              color: "var(--white)",
+              color: canStart ? "var(--white)" : "var(--black)",
               border: "none",
               borderRadius: 30,
               fontSize: "16px",
@@ -101,6 +101,8 @@ export default function StartScreen({ playerName, setPlayerName, onStart }) {
               cursor: canStart ? "pointer" : "not-allowed",
               transition: "background-color 0.2s"
             }}
+            onMouseEnter={(e) => canStart && (e.target.style.backgroundColor = "var(--dark-blue)")}
+            onMouseLeave={(e) => canStart && (e.target.style.backgroundColor = "var(--primary-blue)")}
           >
             Start Game
           </button>
